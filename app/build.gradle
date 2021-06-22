@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
 }
-
+final String API_BASE_URL = "API_BASE_URL"
 android {
     compileSdkVersion 30
     defaultConfig {
@@ -19,6 +19,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        staging {
+            buildConfigField "String", API_BASE_URL, '"https://images-api.nasa.gov/"'
+        }
+
+        production {
+            buildConfigField "String", API_BASE_URL, '"https://images-api.nasa.gov/"'
         }
     }
     compileOptions {
