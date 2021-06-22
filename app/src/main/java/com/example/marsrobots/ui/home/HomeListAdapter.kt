@@ -13,6 +13,7 @@ import com.example.marsrobots.constants.OUTPUT_DATE_FORMAT
 import com.example.marsrobots.constants.TIME_FORMAT
 import com.example.marsrobots.databinding.HomeItemBinding
 import com.example.marsrobots.network.response.Item
+import com.example.marsrobots.room.ImageEntity
 import com.example.marsrobots.utils.Helper
 import com.example.marsrobots.utils.dpTOpx
 import com.example.marsrobots.utils.getDeviceWidth
@@ -20,24 +21,24 @@ import kotlinx.android.synthetic.main.home_item.view.*
 
 
 class HomeListAdapter(private val context: Context) :
-    ListAdapter<Item, HomeListAdapter.ItemViewHolder>(DiffCallback()) {
+    ListAdapter<ImageEntity, HomeListAdapter.ItemViewHolder>(DiffCallback()) {
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(context: Context, item: Item) = with(itemView) {
+        fun bind(context: Context, imageEntity: ImageEntity) = with(itemView) {
             var width = (context.getDeviceWidth() / 2 - context.dpTOpx(12f)).toInt()
             itemView.layoutParams.width = width
             itemView.image.layoutParams.width = width
             itemView.image.layoutParams.height = (width * 0.8).toInt()
             Glide
                 .with(context)
-                .load(item.links[0].href)
+                .load(imageEntity.url)
                 .centerCrop()
                 .placeholder(R.drawable.place_holder)
                 .error(R.drawable.place_holder)
                 .into(itemView.image)
-            itemView.text_description.text = item.data[0].description
+            itemView.text_description.text =imageEntity.description
             itemView.text_date.text =
                 Helper.convertDateToOutputFormat(
-                    item.data[0].dateCreated,
+                   imageEntity.date,
                     TIME_FORMAT,
                     OUTPUT_DATE_FORMAT
                 )
@@ -55,12 +56,12 @@ class HomeListAdapter(private val context: Context) :
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<Item>() {
-    override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+class DiffCallback : DiffUtil.ItemCallback<ImageEntity>() {
+    override fun areItemsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+    override fun areContentsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
         return oldItem == newItem
     }
 }

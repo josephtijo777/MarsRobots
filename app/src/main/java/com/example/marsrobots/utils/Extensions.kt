@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.marsrobots.network.response.Item
+import com.example.marsrobots.room.ImageEntity
+import kotlin.reflect.full.memberProperties
 
 /**
  * To return height of device in pixels
@@ -52,6 +55,7 @@ fun Context.getDeviceWidth(): Int {
 
     return dm.widthPixels
 }
+
 /**
  * To convert dp to **pixel**.
  * @param dp to convert.
@@ -69,6 +73,7 @@ fun Context.dpTOpx(dp: Float): Float {
 fun Context.pxTOdp(px: Float): Float {
     return px / resources.displayMetrics.density
 }
+
 /**
  * To perform fragment transaction and commit the transaction
  * @param func FragmentTransaction to be performed
@@ -76,6 +81,7 @@ fun Context.pxTOdp(px: Float): Float {
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
     beginTransaction().func().commit()
 }
+
 /**
  * To add a fragment into a view
  * @param fragment Fragment to be added
@@ -243,4 +249,17 @@ fun hideKeyboard(activity: Activity?, windowToken: IBinder?) {
     if (activity == null) return
     val inputManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputManager.hideSoftInputFromWindow(windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+}
+
+fun Item.toImageEntityRecord() = with(::ImageEntity) {
+    val propertiesByName = Item::class.memberProperties.associateBy { it.name }
+
+    callBy(args = parameters.associate { parameter ->
+        parameter to when (parameter.name) {
+            "url" -> links[0].href
+            "description" -> data[0].description
+            "date" -> data[0].dateCreated
+            else -> propertiesByName[parameter.name]?.get(this@toImageEntityRecord)
+        }
+    })
 }

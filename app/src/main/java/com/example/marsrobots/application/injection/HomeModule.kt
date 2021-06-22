@@ -5,6 +5,8 @@ import com.example.marsrobots.application.arch.ViewModelKey
 import com.example.marsrobots.application.scope.AppScope
 import com.example.marsrobots.network.HomeApi
 import com.example.marsrobots.repositories.home.HomeRepository
+import com.example.marsrobots.room.ImageDao
+import com.example.marsrobots.room.MarsRobotsDb
 import com.example.marsrobots.viewmodels.home.HomeViewModel
 import dagger.Module
 import dagger.Provides
@@ -21,8 +23,14 @@ class HomeModule {
 
     @AppScope
     @Provides
-    fun providesHomeRepository(homeApi: HomeApi): HomeRepository {
-        return HomeRepository(homeApi)
+    fun providesImageDao(database: MarsRobotsDb): ImageDao {
+        return database.imageDao()
+    }
+
+    @AppScope
+    @Provides
+    fun providesHomeRepository(homeApi: HomeApi, imageDao: ImageDao): HomeRepository {
+        return HomeRepository(homeApi,imageDao)
     }
 
     @Provides

@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.marsrobots.common.ViewState
 import com.example.marsrobots.databinding.FragmentHomeBinding
 import com.example.marsrobots.ui.base.BaseFragment
+import com.example.marsrobots.utils.ConnectionUtils
 import com.example.marsrobots.viewmodels.home.HomeViewModel
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var adapter:HomeListAdapter
+    private lateinit var adapter: HomeListAdapter
 
     private val viewModel by lazy {
         activity?.let {
@@ -30,12 +31,14 @@ class HomeFragment : BaseFragment() {
             return HomeFragment()
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = HomeListAdapter(requireContext())
@@ -49,7 +52,11 @@ class HomeFragment : BaseFragment() {
      * Initiate API call for getting status
      */
     private fun callImageInfoApi() {
-        viewModel?.getImageInfo("mars","image")
+        if (ConnectionUtils.isInternetAvailable(requireContext())) {
+            viewModel?.getImageInfo("mars", "image")
+        } else {
+            viewModel?.getOfflineData()
+        }
         viewModel?.viewState?.observe(viewLifecycleOwner, Observer {
             when (it ?: ViewState.LOADING) {
                 ViewState.LOADING -> {
@@ -69,20 +76,27 @@ class HomeFragment : BaseFragment() {
             }
         })
     }
+
     /**
      * Observing API response
      */
     private fun observeApiResponse() {
-        viewModel?.imageFetchApiResponse?.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it.collection.items)
+        viewModel?.imageListLiveData?.observe(viewLifecycleOwner, Observer {
+            if (it.isNullOrEmpty()) {
+                binding.textError.visibility = View.VISIBLE
+            } else {
+                binding.textError.visibility = View.GONE
+                adapter.submitList(it)
+            }
         })
     }
+
     /**
      * RecyclerView SetUp
      */
     private fun setUpRecyclerView() {
         binding.recyclerView.layoutManager =
-            GridLayoutManager(requireContext(),2)
+            GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = adapter
     }
 }
