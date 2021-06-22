@@ -18,6 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         RxModule::class,
         ActivityBindingModule::class,
         FragmentBindingModule::class,
+        HomeModule::class,
         ViewModelModule::class]
 )
 internal interface ApplicationComponent : AndroidInjector<MarsRobotsApplication> {

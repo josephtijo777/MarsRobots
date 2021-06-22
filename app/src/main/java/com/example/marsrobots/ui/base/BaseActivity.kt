@@ -5,6 +5,6 @@ import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 open class BaseActivity : DaggerAppCompatActivity() {
-   /* @Inject
-    lateinit var viewModelFactory: ViewModelFactory*/
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 }

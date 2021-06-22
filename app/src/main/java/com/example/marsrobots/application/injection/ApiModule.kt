@@ -3,6 +3,7 @@ package com.example.marsrobots.application.injection
 
 import androidx.viewbinding.BuildConfig
 import com.example.marsrobots.application.scope.AppScope
+import com.example.marsrobots.constants.BASE_URL
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -55,7 +56,7 @@ class ApiModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("BASE_URL")
+            .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
