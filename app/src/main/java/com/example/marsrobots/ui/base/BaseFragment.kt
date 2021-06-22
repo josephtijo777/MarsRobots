@@ -9,8 +9,8 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 open class BaseFragment : DaggerFragment() {
-   /* @Inject
-    lateinit var viewModelFactory: ViewModelFactory*/
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private var loadingIndicator: LoadingIndicator? = null
 
