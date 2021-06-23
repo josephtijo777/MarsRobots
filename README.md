@@ -21,3 +21,25 @@ You may write your code in Kotlin or Java.
 * Examples of how to test different parts of your codebase. For this assessment, you don’t have to test everything.
 * Resilience to Android app component lifecycle changes.
 * Use of open source libraries, where appropriate.
+
+## General Overview
+
+Application developed in Kotlin language.It follows MVVM Architecture with the Use of LiveData. Offline logic is handled with Room Database
+Sample Unit test for Entity is added.  
+
+## Technologies
+
+* MVVM Architecture
+* LiveData
+* Databinding
+* ViewModel
+* Unit Test
+* Dependency Injection
+* RxJava
+* Coroutine
+
+## Libraries Used
+
+* Retrofit2
+* Glide
+* Dagger 2
