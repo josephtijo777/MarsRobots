@@ -3,7 +3,6 @@ package com.example.marsrobots.repositories.home
 import androidx.annotation.WorkerThread
 import com.example.marsrobots.network.HomeApi
 import com.example.marsrobots.network.response.ImageFetchApiResponse
-import com.example.marsrobots.network.response.Item
 import com.example.marsrobots.room.ImageDao
 import com.example.marsrobots.room.ImageEntity
 import com.example.marsrobots.utils.applyIoSchedulers
@@ -17,7 +16,7 @@ class HomeRepository(private val homeApi: HomeApi, private val imageDao: ImageDa
     }
 
     fun getAllImages(): Flow<List<ImageEntity>> {
-        return imageDao.getAlphabetizedWords()
+        return imageDao.getAllImages()
     }
 
     @Suppress("RedundantSuspendModifier")
