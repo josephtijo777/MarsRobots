@@ -45,6 +45,9 @@ class HomeFragment : BaseFragment() {
         setUpRecyclerView()
         callImageInfoApi()
         observeApiResponse()
+        binding.swipeRefresh.setOnRefreshListener {
+            callImageInfoApi()
+        }
     }
 
 
@@ -55,6 +58,7 @@ class HomeFragment : BaseFragment() {
         if (ConnectionUtils.isInternetAvailable(requireContext())) {
             viewModel?.getImageInfo("mars", "image")
         } else {
+            binding.swipeRefresh.isRefreshing = false
             viewModel?.getOfflineData()
         }
         viewModel?.viewState?.observe(viewLifecycleOwner, Observer {
