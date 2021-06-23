@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ImageDao {
     @Query("SELECT * FROM image_table")
-    fun getAlphabetizedWords(): Flow<List<ImageEntity>>
+    fun getAllImages(): Flow<List<ImageEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(imageEntity: ImageEntity)

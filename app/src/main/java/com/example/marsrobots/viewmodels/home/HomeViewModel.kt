@@ -21,7 +21,6 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     var imageFetchApiResponse = MutableLiveData<ImageFetchApiResponse>()
     var imageListLiveData = MutableLiveData<List<ImageEntity>>()
-    var imageListLiveDataLOcal = MutableLiveData<List<ImageEntity>>()
     var errorMessage: String? = null
 
     fun getOfflineData() {
